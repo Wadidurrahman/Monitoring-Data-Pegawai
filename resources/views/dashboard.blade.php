@@ -1610,7 +1610,7 @@ manualForm.addEventListener('submit', async event => {
             message: 'Data Anda telah berhasil disimpan.',
             details:
                 detailRow('Nama', escapeHtml(result.data?.name || '-')) +
-                detailRow('NIK', escapeHtml(result.data?.masked_nik || '-')) +
+                // detailRow('NIK', escapeHtml(result.data?.masked_nik || '-')) +
                 detailRow('Instansi', escapeHtml(result.data?.institution || '-')),
             buttonText: 'Selesai',
             focusAfterClose: 'nik',
