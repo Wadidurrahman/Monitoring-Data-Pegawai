@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class ManualRegistration extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'nik_encrypted',
+        'nik_lookup',
+        'institution',
+        'name',
+        'province_name',
+        'regency_name',
+        'district_name',
+        'village_name',
+        'rt',
+        'rw',
+    ];
+
+    protected $hidden = [
+        'nik_encrypted',
+        'nik_lookup',
+    ];
+}
