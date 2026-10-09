@@ -15,3 +15,4 @@ Route::get('/wilayah/provinsi', [RegionController::class, 'provinces'])->name('r
 Route::get('/wilayah/kabupaten-kota', [RegionController::class, 'regencies'])->name('regions.regencies');
 Route::get('/wilayah/kecamatan', [RegionController::class, 'districts'])->name('regions.districts');
 Route::get('/wilayah/kelurahan', [RegionController::class, 'villages'])->name('regions.villages');
+
