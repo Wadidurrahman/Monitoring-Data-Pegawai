@@ -1,4 +1,3 @@
-
 <?php
 
 return [
@@ -14,4 +13,7 @@ return [
     'export_enabled' => env('MONITORING_EXPORT_ENABLED', false),
 
     'access_hours' => (int) env('MONITORING_ACCESS_HOURS', 5),
+
+    'export_username' => env('MONITORING_EXPORT_USERNAME', ''),
+'export_password_hash' => env('MONITORING_EXPORT_PASSWORD_HASH', ''),
 ];
