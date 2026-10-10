@@ -1,0 +1,9 @@
+@import 'tailwindcss' source(none);
+
+@source '../views/monitoring';
+@source '../js/monitoring';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+[x-cloak] {
+    display: none !important;
+}

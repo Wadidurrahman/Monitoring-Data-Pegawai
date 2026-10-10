@@ -8,18 +8,14 @@
     <title>Cek Pendataan Sensus Ekonomi ASN</title>
     @vite('resources/css/app.css')
 </head>
-
 <body>
 <div class="app">
     <header class="topbar">
         <div class="shell topbar-inner">
             <div>
                 <h1 class="brand-title">Cek Pendataan Sensus Ekonomi ASN</h1>
-                <p class="brand-subtitle">
-                    Pengecekan status pendataan Sensus Ekonomi bagi ASN
-                </p>
+                <p class="brand-subtitle">Pengecekan status pendataan Sensus Ekonomi bagi ASN</p>
             </div>
-
             <div class="topbar-meta">
                 <span class="online-dot"></span>
                 <span>Sistem aktif</span>
@@ -34,9 +30,7 @@
             <section class="check-panel">
                 <div class="panel-heading">
                     <h2>Cek Status Pendataan</h2>
-                    <p>
-                        Masukkan NIK dan pilih instansi untuk mengecek status pendataan Sensus Ekonomi ASN.
-                    </p>
+                    <p>Masukkan NIK, NIP, dan pilih instansi untuk mengecek status pendataan Sensus Ekonomi ASN.</p>
                 </div>
 
                 <form id="checkForm" autocomplete="off">
@@ -45,8 +39,15 @@
                             <span>NIK</span>
                             <span class="form-label-meta">16 digit</span>
                         </label>
+                        <input class="input" id="nik" name="nik" type="text" inputmode="numeric" maxlength="16" pattern="[0-9]{16}" placeholder="Masukkan 16 digit NIK" required>
+                    </div>
 
-                        <input class="input" id="nik" name="nik" type="text" inputmode="numeric" maxlength="16" placeholder="Masukkan 16 digit NIK" required>
+                    <div class="form-group">
+                        <label class="form-label" for="nip">
+                            <span>NIP (Nomor Induk Pegawai)</span>
+                            <span class="form-label-meta">18 digit</span>
+                        </label>
+                        <input class="input" id="nip" name="nip" type="text" inputmode="numeric" maxlength="18" pattern="[0-9]{18}" placeholder="Masukkan 18 digit NIP" disabled required>
                     </div>
 
                     <div class="form-group">
@@ -57,14 +58,14 @@
 
                         <div class="institution-picker" id="institutionPicker">
                             <div class="institution-select" id="institutionSelect">
-                                <input class="input" id="institutionSearch" type="text" autocomplete="off" placeholder="Cari atau pilih instansi">
+                                <input class="input" id="institutionSearch" type="text" autocomplete="off" placeholder="Cari atau pilih instansi" disabled>
                                 <span class="institution-chevron">⌄</span>
                                 <div class="institution-menu" id="institutionMenu"></div>
                             </div>
 
                             <div class="institution-other" id="institutionOther">
                                 <div class="institution-other-box">
-                                    <input class="input" id="institutionOtherInput" type="text" maxlength="255" autocomplete="off" placeholder="Masukkan nama instansi">
+                                    <input class="input" id="institutionOtherInput" type="text" maxlength="255" autocomplete="off" placeholder="Masukkan nama instansi" disabled>
                                     <button class="institution-back" id="institutionBack" type="button">← Kembali ke daftar instansi</button>
                                 </div>
                             </div>
@@ -73,7 +74,7 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-primary btn-block" id="checkButton" type="submit">Cek NIK</button>
+                    <button class="btn btn-primary btn-block" id="checkButton" type="submit" disabled>Cek NIK</button>
                 </form>
 
                 <div class="security-note">
@@ -92,13 +93,12 @@
 </div>
 
 <div class="modal" id="resultModal" aria-hidden="true">
-    <div class="modal-dialog" role="dialog" aria-modal="true">
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
         <div class="modal-header">
             <div class="modal-title-wrap">
                 <span class="status-icon success" id="resultIcon">✓</span>
                 <h3 class="modal-title" id="resultTitle">Data Ditemukan</h3>
             </div>
-
             <button class="modal-close" type="button" data-close-modal="resultModal" aria-label="Tutup">×</button>
         </div>
 
@@ -114,20 +114,17 @@
 </div>
 
 <div class="modal" id="notFoundModal" aria-hidden="true">
-    <div class="modal-dialog" role="dialog" aria-modal="true">
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="notFoundTitle">
         <div class="modal-header">
             <div class="modal-title-wrap">
                 <span class="status-icon warning">!</span>
-                <h3 class="modal-title">Lengkapi Data</h3>
+                <h3 class="modal-title" id="notFoundTitle">Lengkapi Data</h3>
             </div>
-
             <button class="modal-close" type="button" data-close-modal="notFoundModal" aria-label="Tutup">×</button>
         </div>
 
         <div class="modal-body">
-            <p class="modal-message">
-                NIK tidak ditemukan pada data master. Silakan lengkapi data yang dibutuhkan untuk melanjutkan pendataan.
-            </p>
+            <p class="modal-message">NIK tidak ditemukan pada data master. Silakan lengkapi data yang dibutuhkan untuk melanjutkan pendataan.</p>
         </div>
 
         <div class="modal-footer">
@@ -137,24 +134,19 @@
 </div>
 
 <div class="modal" id="manualModal" aria-hidden="true">
-    <div class="modal-dialog large" role="dialog" aria-modal="true">
+    <div class="modal-dialog large" role="dialog" aria-modal="true" aria-labelledby="manualTitle">
         <div class="modal-header">
             <div class="modal-title-wrap">
                 <span class="status-icon warning">!</span>
-                <h3 class="modal-title">Lengkapi Data</h3>
+                <h3 class="modal-title" id="manualTitle">Lengkapi Data</h3>
             </div>
-
             <button class="modal-close" type="button" data-close-modal="manualModal" aria-label="Tutup">×</button>
         </div>
 
         <form id="manualForm" autocomplete="off">
             <div class="modal-body">
-                <p class="manual-intro">
-                    Lengkapi informasi berikut dengan data yang sesuai untuk melanjutkan pendataan.
-                </p>
-
+                <p class="manual-intro">Lengkapi informasi berikut secara berurutan untuk melanjutkan pendataan.</p>
                 <div class="error-box" id="manualError"></div>
-
                 <input type="hidden" id="registration_token" name="registration_token">
 
                 <div class="form-grid">
@@ -172,25 +164,47 @@
                         <input class="input" id="manual_institution" type="text" readonly>
                     </div>
 
-                    <div class="form-group span-2">
+                    <div class="form-group">
                         <label class="form-label" for="name">
                             <span>Nama Lengkap</span>
                         </label>
-                        <input class="input" id="name" name="name" type="text" maxlength="255" placeholder="Masukkan nama lengkap" required>
+                        <input class="input" id="name" name="name" type="text" maxlength="255" placeholder="Masukkan nama lengkap" autocomplete="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="manual_nip">
+                            <span>NIP (Nomor Induk Pegawai)</span>
+                            <span class="form-label-meta">18 digit</span>
+                        </label>
+                        <input class="input" id="manual_nip" name="nip" type="text" inputmode="numeric" maxlength="18" pattern="[0-9]{18}" placeholder="18 digit NIP" readonly required>
+                    </div>
+
+                    <div class="form-group span-2">
+                        <label class="form-label" for="manual_email">
+                            <span>Alamat Gmail</span>
+                            <span class="form-label-meta">Wajib</span>
+                        </label>
+                        <input class="input" id="manual_email" name="email" type="email" maxlength="254" placeholder="nama@gmail.com" autocomplete="email" disabled required>
+                        <p class="manual-intro">Gunakan Gmail aktif agar informasi pendataan dapat dikirim ke alamat yang tepat.</p>
+                    </div>
+
+                    <div class="form-group span-2">
+                        <label class="email-consent" for="email_consent" style="display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.6;color:#475569;cursor:pointer">
+                            <input id="email_consent" name="email_consent" type="checkbox" value="1" style="margin-top:4px;flex-shrink:0;accent-color:#2563eb" disabled>
+                            <span>Saya bersedia menerima pemberitahuan dan pengingat terkait pendataan melalui email.</span>
+                        </label>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label" for="provinceSearch">
                             <span>Provinsi</span>
                         </label>
-
                         <div class="region-picker" id="provincePicker">
                             <div class="region-select">
-                                <input class="input region-search" id="provinceSearch" type="text" autocomplete="off" placeholder="Cari atau pilih provinsi">
+                                <input class="input region-search" id="provinceSearch" type="text" autocomplete="off" placeholder="Isi Gmail terlebih dahulu" disabled>
                                 <span class="region-chevron">⌄</span>
                                 <div class="region-menu" id="provinceMenu"></div>
                             </div>
-
                             <input type="hidden" id="province_name" name="province_name">
                             <input type="hidden" id="province_code">
                         </div>
@@ -200,14 +214,12 @@
                         <label class="form-label" for="regencySearch">
                             <span>Kabupaten / Kota</span>
                         </label>
-
                         <div class="region-picker" id="regencyPicker">
                             <div class="region-select">
                                 <input class="input region-search" id="regencySearch" type="text" autocomplete="off" placeholder="Pilih provinsi dahulu" disabled>
                                 <span class="region-chevron">⌄</span>
                                 <div class="region-menu" id="regencyMenu"></div>
                             </div>
-
                             <input type="hidden" id="regency_name" name="regency_name">
                             <input type="hidden" id="regency_code">
                         </div>
@@ -217,14 +229,12 @@
                         <label class="form-label" for="districtSearch">
                             <span>Kecamatan</span>
                         </label>
-
                         <div class="region-picker" id="districtPicker">
                             <div class="region-select">
                                 <input class="input region-search" id="districtSearch" type="text" autocomplete="off" placeholder="Pilih kabupaten / kota dahulu" disabled>
                                 <span class="region-chevron">⌄</span>
                                 <div class="region-menu" id="districtMenu"></div>
                             </div>
-
                             <input type="hidden" id="district_name" name="district_name">
                             <input type="hidden" id="district_code">
                         </div>
@@ -234,14 +244,12 @@
                         <label class="form-label" for="villageSearch">
                             <span>Kelurahan / Desa</span>
                         </label>
-
                         <div class="region-picker" id="villagePicker">
                             <div class="region-select">
                                 <input class="input region-search" id="villageSearch" type="text" autocomplete="off" placeholder="Pilih kecamatan dahulu" disabled>
                                 <span class="region-chevron">⌄</span>
                                 <div class="region-menu" id="villageMenu"></div>
                             </div>
-
                             <input type="hidden" id="village_name" name="village_name">
                             <input type="hidden" id="village_code">
                         </div>
@@ -253,36 +261,14 @@
                                 <label class="form-label" for="rw">
                                     <span>RW</span>
                                 </label>
-
-                                <input
-                                    class="input"
-                                    id="rw"
-                                    name="rw"
-                                    type="text"
-                                    inputmode="numeric"
-                                    maxlength="3"
-                                    autocomplete="off"
-                                    placeholder="Contoh: 001"
-                                    disabled
-                                >
+                                <input class="input" id="rw" name="rw" type="text" inputmode="numeric" maxlength="3" autocomplete="off" placeholder="Contoh: 001" disabled>
                             </div>
 
                             <div class="form-group">
                                 <label class="form-label" for="rt">
                                     <span>RT</span>
                                 </label>
-
-                                <input
-                                    class="input"
-                                    id="rt"
-                                    name="rt"
-                                    type="text"
-                                    inputmode="numeric"
-                                    maxlength="3"
-                                    autocomplete="off"
-                                    placeholder="Contoh: 001"
-                                    disabled
-                                >
+                                <input class="input" id="rt" name="rt" type="text" inputmode="numeric" maxlength="3" autocomplete="off" placeholder="Isi RW terlebih dahulu" disabled>
                             </div>
                         </div>
                     </div>
@@ -291,7 +277,7 @@
 
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-close-modal="manualModal">Batal</button>
-                <button class="btn btn-primary" type="submit" id="saveButton">Simpan Data</button>
+                <button class="btn btn-primary" type="submit" id="saveButton" disabled>Simpan Data</button>
             </div>
         </form>
     </div>
@@ -300,40 +286,31 @@
 <script>
 const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 const institutions = @json($institutions ?? []);
-
-const checkForm = document.getElementById('checkForm');
-const checkButton = document.getElementById('checkButton');
-const manualForm = document.getElementById('manualForm');
-const saveButton = document.getElementById('saveButton');
-const manualError = document.getElementById('manualError');
-
-const resultIcon = document.getElementById('resultIcon');
-const resultTitle = document.getElementById('resultTitle');
-const resultMessage = document.getElementById('resultMessage');
-const resultDetails = document.getElementById('resultDetails');
-const resultAction = document.getElementById('resultAction');
-
-const institutionPicker = document.getElementById('institutionPicker');
-const institutionSelect = document.getElementById('institutionSelect');
-const institutionSearch = document.getElementById('institutionSearch');
-const institutionMenu = document.getElementById('institutionMenu');
-const institutionOther = document.getElementById('institutionOther');
-const institutionOtherInput = document.getElementById('institutionOtherInput');
-const institutionBack = document.getElementById('institutionBack');
-const institutionInput = document.getElementById('institution');
-const institutionModeLabel = document.getElementById('institutionModeLabel');
+const el = id => document.getElementById(id);
+const checkForm = el('checkForm');
+const manualForm = el('manualForm');
+const checkButton = el('checkButton');
+const saveButton = el('saveButton');
+const manualError = el('manualError');
+const institutionPicker = el('institutionPicker');
+const institutionSearch = el('institutionSearch');
+const institutionMenu = el('institutionMenu');
+const institutionInput = el('institution');
+const institutionOtherInput = el('institutionOtherInput');
 
 let institutionOtherMode = false;
 let institutionResults = [];
 let institutionActiveIndex = -1;
+let checking = false;
+let saving = false;
 
-const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({
+const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({
     '&': '&amp;',
     '<': '&lt;',
     '>': '&gt;',
     '"': '&quot;',
-    "'": '&#039;',
-}[char]));
+    "'": '&#039;'
+}[character]));
 
 const normalizeText = value => String(value ?? '')
     .normalize('NFD')
@@ -342,33 +319,47 @@ const normalizeText = value => String(value ?? '')
     .trim()
     .toLowerCase();
 
-const openModal = id => {
-    const modal = document.getElementById(id);
-    if (!modal) return;
+const toggleInput = (input, enabled, clearOnDisable = true) => {
+    if (input.disabled === !enabled) return;
 
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden', 'false');
+    input.disabled = !enabled;
+
+    if (!enabled && clearOnDisable) {
+        if (input.type === 'checkbox') input.checked = false;
+        else input.value = '';
+    }
+};
+
+const setGroupState = (input, enabled) => {
+    const group = input.closest('.form-group');
+
+    if (group) {
+        group.style.opacity = enabled ? '1' : '0.5';
+        group.style.transition = 'opacity 180ms ease';
+    }
+};
+
+const openModal = id => {
+    el(id).classList.add('open');
+    el(id).setAttribute('aria-hidden', 'false');
 };
 
 const closeModal = id => {
-    const modal = document.getElementById(id);
-    if (!modal) return;
-
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden', 'true');
+    el(id).classList.remove('open');
+    el(id).setAttribute('aria-hidden', 'true');
 };
 
-const setButtonLoading = (button, loading, normalText, loadingText) => {
+const setButtonLoading = (button, loading, normal, text) => {
     button.disabled = loading;
     button.innerHTML = loading
-        ? `<span class="spinner"></span>&nbsp;&nbsp;${loadingText}`
-        : normalText;
+        ? `<span class="spinner"></span>&nbsp;&nbsp;${text}`
+        : normal;
 };
 
 const detailRow = (label, value) => `
     <div class="detail-row">
         <div class="detail-label">${escapeHtml(label)}</div>
-        <div class="detail-value">${value}</div>
+        <div class="detail-value">${escapeHtml(value)}</div>
     </div>
 `;
 
@@ -378,22 +369,16 @@ const showResultModal = ({
     message,
     details = '',
     buttonText = 'Selesai',
-    focusAfterClose = null,
+    focusAfterClose = null
 }) => {
-    const iconMap = {
-        success: '✓',
-        warning: '!',
-        error: '!',
-    };
-
-    resultIcon.className = `status-icon ${type}`;
-    resultIcon.textContent = iconMap[type] || '✓';
-    resultTitle.textContent = title;
-    resultMessage.textContent = message;
-    resultDetails.innerHTML = details;
-    resultDetails.style.display = details ? 'block' : 'none';
-    resultAction.textContent = buttonText;
-    resultAction.dataset.focus = focusAfterClose || '';
+    el('resultIcon').className = `status-icon ${type}`;
+    el('resultIcon').textContent = type === 'success' ? '✓' : '!';
+    el('resultTitle').textContent = title;
+    el('resultMessage').textContent = message;
+    el('resultDetails').innerHTML = details;
+    el('resultDetails').style.display = details ? 'block' : 'none';
+    el('resultAction').textContent = buttonText;
+    el('resultAction').dataset.focus = focusAfterClose || '';
 
     openModal('resultModal');
 };
@@ -406,80 +391,76 @@ const readJson = async response => {
     }
 };
 
-const getInstitutionResults = query => {
-    const normalized = normalizeText(query);
-    const tokens = normalized.split(' ').filter(Boolean);
+const institutionMatches = value => {
+    const tokens = normalizeText(value).split(' ').filter(Boolean);
+    const query = normalizeText(value);
+
+    const rank = item => {
+        const name = normalizeText(item.name);
+        const alias = normalizeText(item.alias);
+
+        if (!query) return 4;
+        if (name === query || alias === query) return 0;
+        if (name.startsWith(query) || alias.startsWith(query)) return 1;
+        if (name.split(' ').some(word => word.startsWith(query))) return 2;
+
+        return 3;
+    };
 
     return institutions
-        .filter(item => {
-            const text = normalizeText(`${item.name ?? ''} ${item.alias ?? ''}`);
-            return tokens.every(token => text.includes(token));
-        })
-        .sort((a, b) => {
-            const aName = normalizeText(a.name);
-            const bName = normalizeText(b.name);
-            const aAlias = normalizeText(a.alias);
-            const bAlias = normalizeText(b.alias);
+        .filter(item => tokens.every(token =>
+            normalizeText(`${item.name ?? ''} ${item.alias ?? ''}`).includes(token)
+        ))
+        .sort((a, b) =>
+            rank(a) - rank(b) ||
+            String(a.name).localeCompare(String(b.name), 'id')
+        );
+};
 
-            const score = (name, alias) => {
-                if (!normalized) return 4;
-                if (name === normalized || alias === normalized) return 0;
-                if (name.startsWith(normalized) || alias.startsWith(normalized)) return 1;
-                if (name.split(' ').some(word => word.startsWith(normalized))) return 2;
-                return 3;
-            };
-
-            const difference = score(aName, aAlias) - score(bName, bAlias);
-            return difference !== 0
-                ? difference
-                : aName.localeCompare(bName, 'id');
-        });
+const closeInstitutionMenu = () => {
+    institutionMenu.classList.remove('open', 'drop-up', 'drop-down');
 };
 
 const positionInstitutionMenu = () => {
     if (!institutionMenu.classList.contains('open')) return;
 
     const viewport = window.visualViewport;
-    const viewportHeight = viewport ? viewport.height : window.innerHeight;
-    const viewportTop = viewport ? viewport.offsetTop : 0;
-
     const rect = institutionSearch.getBoundingClientRect();
-    const spaceBelow = viewportTop + viewportHeight - rect.bottom - 8;
-    const spaceAbove = rect.top - viewportTop - 8;
-    const openUp = spaceBelow < 155 && spaceAbove > spaceBelow;
+    const bottom = (viewport
+        ? viewport.offsetTop + viewport.height
+        : window.innerHeight) - rect.bottom - 8;
+    const top = rect.top - (viewport ? viewport.offsetTop : 0) - 8;
+    const openUp = bottom < 155 && top > bottom;
 
     institutionMenu.classList.remove('drop-up', 'drop-down');
     institutionMenu.classList.add(openUp ? 'drop-up' : 'drop-down');
 
     const list = institutionMenu.querySelector('.institution-list');
 
-    if (!list || list.classList.contains('is-empty')) return;
-
-    const availableSpace = openUp ? spaceAbove : spaceBelow;
-    const listHeight = Math.max(72, Math.min(108, availableSpace - 45));
-
-    list.style.height = `${listHeight}px`;
-    list.style.maxHeight = `${listHeight}px`;
+    if (list && !list.classList.contains('is-empty')) {
+        list.style.maxHeight = `${Math.max(
+            72,
+            Math.min(108, (openUp ? top : bottom) - 45)
+        )}px`;
+    }
 };
 
 const renderInstitutionMenu = () => {
-    institutionResults = getInstitutionResults(institutionSearch.value);
+    if (institutionSearch.disabled) return;
+
+    institutionResults = institutionMatches(institutionSearch.value);
     institutionActiveIndex = -1;
 
-    const options = institutionResults
-        .map((item, index) => `
-            <button class="institution-option" type="button" data-institution-index="${index}">
-                <span class="institution-option-name">${escapeHtml(item.name)}</span>
-                ${item.alias ? `<span class="institution-option-alias">${escapeHtml(item.alias)}</span>` : ''}
-            </button>
-        `)
-        .join('');
-
-    const emptyClass = institutionResults.length ? '' : ' is-empty';
-
     institutionMenu.innerHTML = `
-        <div class="institution-list${emptyClass}">
-            ${options || '<div class="institution-empty">Tidak ada instansi yang cocok.</div>'}
+        <div class="institution-list${institutionResults.length ? '' : ' is-empty'}">
+            ${institutionResults.map((item, index) => `
+                <button class="institution-option" type="button" data-institution-index="${index}">
+                    <span class="institution-option-name">${escapeHtml(item.name)}</span>
+                    ${item.alias
+                        ? `<span class="institution-option-alias">${escapeHtml(item.alias)}</span>`
+                        : ''}
+                </button>
+            `).join('') || '<div class="institution-empty">Tidak ada instansi yang cocok.</div>'}
         </div>
         <div class="institution-other-option" role="button" tabindex="0" data-institution-other="true">
             <span class="institution-other-icon">+</span>
@@ -491,13 +472,80 @@ const renderInstitutionMenu = () => {
     requestAnimationFrame(positionInstitutionMenu);
 };
 
+const resetInstitutionPicker = () => {
+    institutionOtherMode = false;
+    institutionInput.value = '';
+    institutionSearch.value = '';
+    institutionOtherInput.value = '';
+    institutionSearch.setCustomValidity('');
+    institutionOtherInput.setCustomValidity('');
+
+    el('institutionOther').classList.remove('open');
+    el('institutionSelect').classList.remove('hidden');
+    el('institutionModeLabel').textContent = 'Pilih instansi';
+
+    closeInstitutionMenu();
+};
+
+const updateMainForm = () => {
+    const nikValid = /^\d{16}$/.test(el('nik').value);
+
+    toggleInput(el('nip'), nikValid);
+    setGroupState(el('nip'), nikValid);
+
+    const nipValid = nikValid && /^\d{18}$/.test(el('nip').value);
+
+    if (!nipValid && (
+        institutionInput.value ||
+        institutionSearch.value ||
+        institutionOtherMode
+    )) {
+        resetInstitutionPicker();
+    }
+
+    toggleInput(
+        institutionSearch,
+        nipValid && !institutionOtherMode,
+        false
+    );
+
+    toggleInput(
+        institutionOtherInput,
+        nipValid && institutionOtherMode,
+        false
+    );
+
+    institutionPicker.style.opacity = nipValid ? '1' : '0.5';
+    institutionPicker.style.pointerEvents = nipValid ? '' : 'none';
+
+    const institutionValid =
+        nipValid &&
+        institutionInput.value.trim() !== '' &&
+        (
+            institutionOtherMode
+                ? institutionOtherInput.value.trim() !== ''
+                : institutions.some(item =>
+                    normalizeText(item.name) === normalizeText(institutionSearch.value) ||
+                    (
+                        item.alias &&
+                        normalizeText(item.alias) === normalizeText(institutionSearch.value)
+                    )
+                )
+        );
+
+    if (!checking) {
+        checkButton.disabled = !institutionValid;
+    }
+};
+
 const selectInstitution = item => {
     institutionSearch.value = item.name;
     institutionInput.value = item.name;
-
-    institutionMenu.classList.remove('open', 'drop-up', 'drop-down');
     institutionSearch.setCustomValidity('');
+
+    closeInstitutionMenu();
     institutionSearch.blur();
+    updateMainForm();
 };
 
 const activateInstitutionOther = () => {
@@ -506,56 +554,33 @@ const activateInstitutionOther = () => {
     institutionSearch.value = '';
     institutionOtherInput.value = '';
 
-    institutionMenu.classList.remove('open', 'drop-up', 'drop-down');
-    institutionSelect.classList.add('hidden');
-    institutionOther.classList.add('open');
+    closeInstitutionMenu();
 
-    institutionModeLabel.textContent = 'Instansi lainnya';
+    el('institutionSelect').classList.add('hidden');
+    el('institutionOther').classList.add('open');
+    el('institutionModeLabel').textContent = 'Instansi lainnya';
+
+    updateMainForm();
 
     setTimeout(() => {
         institutionOtherInput.focus({ preventScroll: true });
     }, 100);
 };
 
-const resetInstitutionPicker = () => {
-    institutionOtherMode = false;
-    institutionInput.value = '';
-    institutionSearch.value = '';
-    institutionOtherInput.value = '';
-
-    institutionSearch.setCustomValidity('');
-    institutionOtherInput.setCustomValidity('');
-
-    institutionOther.classList.remove('open');
-    institutionSelect.classList.remove('hidden');
-    institutionMenu.classList.remove('open', 'drop-up', 'drop-down');
-
-    institutionModeLabel.textContent = 'Pilih instansi';
-};
-
-institutionSearch.addEventListener('focus', () => {
-    renderInstitutionMenu();
-    setTimeout(positionInstitutionMenu, 50);
-    setTimeout(positionInstitutionMenu, 200);
-    setTimeout(positionInstitutionMenu, 400);
-});
-
-institutionSearch.addEventListener('click', () => {
-    renderInstitutionMenu();
-    setTimeout(positionInstitutionMenu, 20);
-});
+institutionSearch.addEventListener('focus', renderInstitutionMenu);
+institutionSearch.addEventListener('click', renderInstitutionMenu);
 
 institutionSearch.addEventListener('input', () => {
     institutionInput.value = '';
     institutionSearch.setCustomValidity('');
     renderInstitutionMenu();
-    setTimeout(positionInstitutionMenu, 20);
+    updateMainForm();
 });
 
 institutionSearch.addEventListener('keydown', event => {
     const options = [...institutionMenu.querySelectorAll('.institution-option')];
 
-    if (event.key === 'ArrowDown') {
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
         event.preventDefault();
 
         if (!institutionMenu.classList.contains('open')) {
@@ -565,36 +590,21 @@ institutionSearch.addEventListener('keydown', event => {
 
         if (!options.length) return;
 
-        institutionActiveIndex = institutionActiveIndex >= options.length - 1
-            ? 0
-            : institutionActiveIndex + 1;
+        institutionActiveIndex = event.key === 'ArrowDown'
+            ? (institutionActiveIndex + 1) % options.length
+            : (institutionActiveIndex + options.length - 1) % options.length;
 
         options.forEach((option, index) => {
             option.classList.toggle('active', index === institutionActiveIndex);
         });
 
-        options[institutionActiveIndex]?.scrollIntoView({ block: 'nearest' });
-    }
-
-    if (event.key === 'ArrowUp') {
-        event.preventDefault();
-
-        if (!options.length) return;
-
-        institutionActiveIndex = institutionActiveIndex <= 0
-            ? options.length - 1
-            : institutionActiveIndex - 1;
-
-        options.forEach((option, index) => {
-            option.classList.toggle('active', index === institutionActiveIndex);
+        options[institutionActiveIndex].scrollIntoView({
+            block: 'nearest'
         });
-
-        options[institutionActiveIndex]?.scrollIntoView({ block: 'nearest' });
     }
 
     if (
         event.key === 'Enter' &&
-        institutionMenu.classList.contains('open') &&
         institutionActiveIndex >= 0 &&
         institutionResults[institutionActiveIndex]
     ) {
@@ -603,7 +613,7 @@ institutionSearch.addEventListener('keydown', event => {
     }
 
     if (event.key === 'Escape') {
-        institutionMenu.classList.remove('open', 'drop-up', 'drop-down');
+        closeInstitutionMenu();
     }
 });
 
@@ -614,25 +624,21 @@ institutionMenu.addEventListener('pointerdown', event => {
     if (!option && !other) return;
 
     event.preventDefault();
-    event.stopPropagation();
 
     if (option) {
         const item = institutionResults[Number(option.dataset.institutionIndex)];
         if (item) selectInstitution(item);
-        return;
+    } else {
+        activateInstitutionOther();
     }
-
-    activateInstitutionOther();
 });
 
 institutionMenu.addEventListener('keydown', event => {
-    const other = event.target.closest('[data-institution-other]');
-
-    if (!other) return;
-
-    if (event.key === 'Enter' || event.key === ' ') {
+    if (
+        event.target.closest('[data-institution-other]') &&
+        (event.key === 'Enter' || event.key === ' ')
+    ) {
         event.preventDefault();
-        event.stopPropagation();
         activateInstitutionOther();
     }
 });
@@ -642,13 +648,15 @@ institutionOtherInput.addEventListener('input', () => {
     institutionInput.value = institutionOtherInput.value
         .replace(/\s+/g, ' ')
         .trimStart();
+
+    updateMainForm();
 });
 
-institutionBack.addEventListener('pointerdown', event => {
+el('institutionBack').addEventListener('pointerdown', event => {
     event.preventDefault();
-    event.stopPropagation();
 
     resetInstitutionPicker();
+    updateMainForm();
 
     setTimeout(() => {
         institutionSearch.focus({ preventScroll: true });
@@ -660,56 +668,53 @@ const positionRegionMenu = (search, menu) => {
     if (!menu.classList.contains('open')) return;
 
     const viewport = window.visualViewport;
-    const viewportHeight = viewport ? viewport.height : window.innerHeight;
-    const viewportTop = viewport ? viewport.offsetTop : 0;
-
     const rect = search.getBoundingClientRect();
-    const spaceBelow = viewportTop + viewportHeight - rect.bottom - 8;
-    const spaceAbove = rect.top - viewportTop - 8;
-    const openUp = spaceBelow < 125 && spaceAbove > spaceBelow;
+    const bottom = (viewport
+        ? viewport.offsetTop + viewport.height
+        : window.innerHeight) - rect.bottom - 8;
+    const top = rect.top - (viewport ? viewport.offsetTop : 0) - 8;
+    const openUp = bottom < 125 && top > bottom;
 
     menu.classList.remove('drop-up', 'drop-down');
     menu.classList.add(openUp ? 'drop-up' : 'drop-down');
 
     const list = menu.querySelector('.region-list');
-    if (!list) return;
 
-    const availableSpace = openUp ? spaceAbove : spaceBelow;
-    const listHeight = Math.max(72, Math.min(108, availableSpace - 10));
-
-    list.style.height = `${listHeight}px`;
-    list.style.maxHeight = `${listHeight}px`;
+    if (list) {
+        list.style.maxHeight = `${Math.max(
+            72,
+            Math.min(108, (openUp ? top : bottom) - 10)
+        )}px`;
+    }
 };
 
 const fetchRegionJson = async url => {
     const response = await fetch(url, {
-        headers: {
-            Accept: 'application/json',
-        },
+        headers: { Accept: 'application/json' }
     });
 
-    const result = await readJson(response);
+    const data = await readJson(response);
 
     if (!response.ok) {
-        throw new Error(result.message || 'Data wilayah gagal dimuat.');
+        throw new Error(data.message || 'Data wilayah gagal dimuat.');
     }
 
-    return Array.isArray(result) ? result : [];
+    return Array.isArray(data) ? data : [];
 };
 
 const createRegionPicker = ({
     searchId,
     menuId,
     valueId,
-    codeId = null,
-    emptyText = 'Data tidak ditemukan.',
-    onOpen = null,
-    onSelect = null,
+    codeId,
+    emptyText,
+    onOpen,
+    onSelect
 }) => {
-    const search = document.getElementById(searchId);
-    const menu = document.getElementById(menuId);
-    const valueInput = document.getElementById(valueId);
-    const codeInput = codeId ? document.getElementById(codeId) : null;
+    const search = el(searchId);
+    const menu = el(menuId);
+    const value = el(valueId);
+    const code = codeId ? el(codeId) : null;
 
     let items = [];
     let results = [];
@@ -724,88 +729,57 @@ const createRegionPicker = ({
         items = Array.isArray(data) ? data : [];
     };
 
-    const scoreItem = (item, query) => {
-        if (!query) return 10;
-
-        const name = normalizeText(item.name);
-        const alias = normalizeText(item.alias);
-        const combined = normalizeText(`${item.name ?? ''} ${item.alias ?? ''}`);
-
-        if (name === query) return 0;
-        if (alias === query) return 1;
-        if (name.startsWith(query)) return 2;
-        if (alias.startsWith(query)) return 3;
-        if (name.split(' ').some(word => word.startsWith(query))) return 4;
-        if (alias.split(' ').some(word => word.startsWith(query))) return 5;
-        if (name.includes(query)) return 6;
-        if (alias.includes(query)) return 7;
-        if (combined.includes(query)) return 8;
-
-        return 20;
-    };
-
-    const getFiltered = () => {
-        const query = normalizeText(search.value);
-
-        if (!query) {
-            return [...items]
-                .sort((a, b) => String(a.name).localeCompare(String(b.name), 'id'))
-                .slice(0, 20);
-        }
-
-        const tokens = query.split(' ').filter(Boolean);
-
-        return items
-            .filter(item => {
-                const text = normalizeText(`${item.name ?? ''} ${item.alias ?? ''}`);
-                return tokens.every(token => text.includes(token));
-            })
-            .map(item => ({
-                ...item,
-                _score: scoreItem(item, query),
-            }))
-            .sort((a, b) => {
-                return a._score !== b._score
-                    ? a._score - b._score
-                    : String(a.name).localeCompare(String(b.name), 'id');
-            })
-            .slice(0, 20);
-    };
-
     const choose = item => {
         search.value = item.name ?? '';
-        valueInput.value = item.name ?? '';
+        value.value = item.name ?? '';
 
-        if (codeInput) {
-            codeInput.value = item.id ?? item.code ?? '';
+        if (code) {
+            code.value = item.id ?? item.code ?? '';
         }
 
         search.setCustomValidity('');
         close();
 
-        if (typeof onSelect === 'function') {
+        if (onSelect) {
             onSelect(item);
         }
 
         search.blur();
     };
 
+    const filtered = () => {
+        const query = normalizeText(search.value);
+
+        return items
+            .filter(item =>
+                query.split(' ').filter(Boolean).every(token =>
+                    normalizeText(`${item.name ?? ''} ${item.alias ?? ''}`).includes(token)
+                )
+            )
+            .sort((a, b) =>
+                String(a.name).localeCompare(String(b.name), 'id')
+            )
+            .slice(0, 20);
+    };
+
     const renderItems = () => {
-        results = getFiltered();
+        if (search.disabled) return;
+
+        results = filtered();
         activeIndex = -1;
 
-        const options = results
-            .map((item, index) => `
-                <div class="region-option" role="button" tabindex="-1" data-region-index="${index}">
-                    <span class="region-option-name">${escapeHtml(item.name)}</span>
-                    ${item.alias ? `<span class="region-option-alias">${escapeHtml(item.alias)}</span>` : ''}
-                </div>
-            `)
-            .join('');
-
         menu.innerHTML = results.length
-            ? `<div class="region-list">${options}</div>`
-            : `<div class="region-empty">${escapeHtml(emptyText)}</div>`;
+            ? `<div class="region-list">
+                ${results.map((item, index) => `
+                    <div class="region-option" role="button" tabindex="-1" data-region-index="${index}">
+                        <span class="region-option-name">${escapeHtml(item.name)}</span>
+                        ${item.alias
+                            ? `<span class="region-option-alias">${escapeHtml(item.alias)}</span>`
+                            : ''}
+                    </div>
+                `).join('')}
+            </div>`
+            : `<div class="region-empty">${escapeHtml(emptyText || 'Data tidak ditemukan.')}</div>`;
 
         menu.classList.add('open');
 
@@ -814,25 +788,14 @@ const createRegionPicker = ({
         });
     };
 
-    const render = async () => {
+    const open = async () => {
         if (search.disabled || loading) return;
 
         try {
-            if (typeof onOpen === 'function') {
+            if (onOpen) {
                 loading = true;
-
-                menu.innerHTML = `
-                    <div class="region-loading">
-                        <span class="spinner"></span>
-                        <span>Memuat data...</span>
-                    </div>
-                `;
-
+                menu.innerHTML = '<div class="region-loading"><span class="spinner"></span> Memuat data...</div>';
                 menu.classList.add('open');
-
-                requestAnimationFrame(() => {
-                    positionRegionMenu(search, menu);
-                });
 
                 await onOpen();
                 loading = false;
@@ -841,76 +804,60 @@ const createRegionPicker = ({
             renderItems();
         } catch (error) {
             loading = false;
-
-            menu.innerHTML = `
-                <div class="region-empty">
-                    ${escapeHtml(error.message || 'Data wilayah gagal dimuat.')}
-                </div>
-            `;
-
+            menu.innerHTML = `<div class="region-empty">${escapeHtml(error.message || 'Data wilayah gagal dimuat.')}</div>`;
             menu.classList.add('open');
-
-            requestAnimationFrame(() => {
-                positionRegionMenu(search, menu);
-            });
         }
     };
 
     const reset = () => {
         search.value = '';
-        search.setCustomValidity('');
-        valueInput.value = '';
+        value.value = '';
 
-        if (codeInput) {
-            codeInput.value = '';
+        if (code) {
+            code.value = '';
         }
 
+        search.setCustomValidity('');
         close();
     };
 
-    const setDisabled = (disabled, placeholder = null) => {
-        search.disabled = disabled;
-
-        if (placeholder !== null) {
+    const setDisabled = (disabled, placeholder) => {
+        if (placeholder !== undefined) {
             search.placeholder = placeholder;
         }
 
-        if (disabled) {
+        if (disabled && !search.disabled) {
             reset();
+        }
+
+        search.disabled = disabled;
+
+        const group = search.closest('.form-group');
+
+        if (group) {
+            group.style.opacity = disabled ? '0.5' : '1';
         }
     };
 
     const commitExact = () => {
-        const query = normalizeText(search.value);
+        const match = items.find(item =>
+            normalizeText(item.name) === normalizeText(search.value)
+        );
 
-        if (!query) return false;
+        if (!match) return false;
 
-        const exact = items.find(item => normalizeText(item.name) === query);
-
-        if (!exact) return false;
-
-        choose(exact);
+        choose(match);
         return true;
     };
 
-    search.addEventListener('focus', () => {
-        render();
-
-        setTimeout(() => positionRegionMenu(search, menu), 50);
-        setTimeout(() => positionRegionMenu(search, menu), 200);
-        setTimeout(() => positionRegionMenu(search, menu), 400);
-    });
-
-    search.addEventListener('click', () => {
-        render();
-        setTimeout(() => positionRegionMenu(search, menu), 20);
-    });
+    search.addEventListener('focus', open);
+    search.addEventListener('click', open);
 
     search.addEventListener('input', () => {
-        valueInput.value = '';
+        value.value = '';
 
-        if (codeInput) {
-            codeInput.value = '';
+        if (code) {
+            code.value = '';
         }
 
         search.setCustomValidity('');
@@ -918,61 +865,43 @@ const createRegionPicker = ({
         if (items.length) {
             renderItems();
         } else {
-            render();
+            open();
         }
+
+        updateManualForm();
     });
 
     search.addEventListener('keydown', event => {
-        const options = [...menu.querySelectorAll('.region-option')];
-
-        if (event.key === 'ArrowDown') {
+        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
             event.preventDefault();
 
             if (!menu.classList.contains('open')) {
-                render();
+                open();
                 return;
             }
 
-            if (!options.length) return;
+            if (!results.length) return;
 
-            activeIndex = activeIndex >= options.length - 1
-                ? 0
-                : activeIndex + 1;
+            activeIndex = event.key === 'ArrowDown'
+                ? (activeIndex + 1) % results.length
+                : (activeIndex + results.length - 1) % results.length;
 
-            options.forEach((option, index) => {
+            menu.querySelectorAll('.region-option').forEach((option, index) => {
                 option.classList.toggle('active', index === activeIndex);
             });
 
-            options[activeIndex]?.scrollIntoView({ block: 'nearest' });
+            menu.querySelectorAll('.region-option')[activeIndex]?.scrollIntoView({
+                block: 'nearest'
+            });
         }
 
-        if (event.key === 'ArrowUp') {
+        if (
+            event.key === 'Enter' &&
+            activeIndex >= 0 &&
+            results[activeIndex]
+        ) {
             event.preventDefault();
-
-            if (!options.length) return;
-
-            activeIndex = activeIndex <= 0
-                ? options.length - 1
-                : activeIndex - 1;
-
-            options.forEach((option, index) => {
-                option.classList.toggle('active', index === activeIndex);
-            });
-
-            options[activeIndex]?.scrollIntoView({ block: 'nearest' });
-        }
-
-        if (event.key === 'Enter') {
-            if (activeIndex >= 0 && results[activeIndex]) {
-                event.preventDefault();
-                choose(results[activeIndex]);
-                return;
-            }
-
-            if (results.length === 1) {
-                event.preventDefault();
-                choose(results[0]);
-            }
+            choose(results[activeIndex]);
         }
 
         if (event.key === 'Escape') {
@@ -986,7 +915,6 @@ const createRegionPicker = ({
         if (!option) return;
 
         event.preventDefault();
-        event.stopPropagation();
 
         const item = results[Number(option.dataset.regionIndex)];
 
@@ -1021,8 +949,7 @@ const createRegionPicker = ({
         setDisabled,
         commitExact,
         getSearch: () => search,
-        getValue: () => valueInput.value,
-        getCode: () => codeInput?.value || '',
+        getValue: () => value.value
     };
 };
 
@@ -1031,37 +958,17 @@ let regenciesParent = '';
 let districtsParent = '';
 let villagesParent = '';
 
-let provincePickerInstance;
-let regencyPickerInstance;
-let districtPickerInstance;
-let villagePickerInstance;
+let provincePicker;
+let regencyPicker;
+let districtPicker;
+let villagePicker;
 
 const resetRtRw = () => {
-    const rwInput = document.getElementById('rw');
-    const rtInput = document.getElementById('rt');
-
-    rwInput.value = '';
-    rtInput.value = '';
-
-    rwInput.disabled = true;
-    rtInput.disabled = true;
-
-    rwInput.setCustomValidity('');
-    rtInput.setCustomValidity('');
-};
-
-const enableRtRw = () => {
-    const rwInput = document.getElementById('rw');
-    const rtInput = document.getElementById('rt');
-
-    rwInput.value = '';
-    rtInput.value = '';
-
-    rwInput.disabled = false;
-    rtInput.disabled = false;
-
-    rwInput.setCustomValidity('');
-    rtInput.setCustomValidity('');
+    for (const id of ['rw', 'rt']) {
+        el(id).value = '';
+        el(id).disabled = true;
+        el(id).setCustomValidity('');
+    }
 };
 
 const loadProvinces = async () => {
@@ -1069,18 +976,16 @@ const loadProvinces = async () => {
 
     const data = await fetchRegionJson('/wilayah/provinsi');
 
-    provincePickerInstance.setItems(
-        data.map(item => ({
-            id: item.id ?? item.code,
-            name: item.name,
-        }))
-    );
+    provincePicker.setItems(data.map(item => ({
+        id: item.id ?? item.code,
+        name: item.name
+    })));
 
     provincesLoaded = true;
 };
 
 const loadRegencies = async () => {
-    const code = document.getElementById('province_code').value;
+    const code = el('province_code').value;
 
     if (!code || regenciesParent === code) return;
 
@@ -1088,18 +993,18 @@ const loadRegencies = async () => {
         `/wilayah/kabupaten-kota?province=${encodeURIComponent(code)}`
     );
 
-    regencyPickerInstance.setItems(
-        data.map(item => ({
-            id: item.id ?? item.code,
-            name: item.name,
-        }))
-    );
+    if (el('province_code').value !== code) return;
+
+    regencyPicker.setItems(data.map(item => ({
+        id: item.id ?? item.code,
+        name: item.name
+    })));
 
     regenciesParent = code;
 };
 
 const loadDistricts = async () => {
-    const code = document.getElementById('regency_code').value;
+    const code = el('regency_code').value;
 
     if (!code || districtsParent === code) return;
 
@@ -1107,18 +1012,18 @@ const loadDistricts = async () => {
         `/wilayah/kecamatan?regency=${encodeURIComponent(code)}`
     );
 
-    districtPickerInstance.setItems(
-        data.map(item => ({
-            id: item.id ?? item.code,
-            name: item.name,
-        }))
-    );
+    if (el('regency_code').value !== code) return;
+
+    districtPicker.setItems(data.map(item => ({
+        id: item.id ?? item.code,
+        name: item.name
+    })));
 
     districtsParent = code;
 };
 
 const loadVillages = async () => {
-    const code = document.getElementById('district_code').value;
+    const code = el('district_code').value;
 
     if (!code || villagesParent === code) return;
 
@@ -1126,17 +1031,17 @@ const loadVillages = async () => {
         `/wilayah/kelurahan?district=${encodeURIComponent(code)}`
     );
 
-    villagePickerInstance.setItems(
-        data.map(item => ({
-            id: item.id ?? item.code,
-            name: item.name,
-        }))
-    );
+    if (el('district_code').value !== code) return;
+
+    villagePicker.setItems(data.map(item => ({
+        id: item.id ?? item.code,
+        name: item.name
+    })));
 
     villagesParent = code;
 };
 
-provincePickerInstance = createRegionPicker({
+provincePicker = createRegionPicker({
     searchId: 'provinceSearch',
     menuId: 'provinceMenu',
     valueId: 'province_name',
@@ -1148,34 +1053,19 @@ provincePickerInstance = createRegionPicker({
         districtsParent = '';
         villagesParent = '';
 
-        regencyPickerInstance.setItems([]);
-        districtPickerInstance.setItems([]);
-        villagePickerInstance.setItems([]);
+        regencyPicker.setItems([]);
+        districtPicker.setItems([]);
+        villagePicker.setItems([]);
 
-        regencyPickerInstance.reset();
-        districtPickerInstance.reset();
-        villagePickerInstance.reset();
-
+        regencyPicker.reset();
+        districtPicker.reset();
+        villagePicker.reset();
         resetRtRw();
-
-        regencyPickerInstance.setDisabled(
-            false,
-            'Cari atau pilih kabupaten / kota'
-        );
-
-        districtPickerInstance.setDisabled(
-            true,
-            'Pilih kabupaten / kota dahulu'
-        );
-
-        villagePickerInstance.setDisabled(
-            true,
-            'Pilih kecamatan dahulu'
-        );
-    },
+        updateManualForm();
+    }
 });
 
-regencyPickerInstance = createRegionPicker({
+regencyPicker = createRegionPicker({
     searchId: 'regencySearch',
     menuId: 'regencyMenu',
     valueId: 'regency_name',
@@ -1186,27 +1076,17 @@ regencyPickerInstance = createRegionPicker({
         districtsParent = '';
         villagesParent = '';
 
-        districtPickerInstance.setItems([]);
-        villagePickerInstance.setItems([]);
+        districtPicker.setItems([]);
+        villagePicker.setItems([]);
 
-        districtPickerInstance.reset();
-        villagePickerInstance.reset();
-
+        districtPicker.reset();
+        villagePicker.reset();
         resetRtRw();
-
-        districtPickerInstance.setDisabled(
-            false,
-            'Cari atau pilih kecamatan'
-        );
-
-        villagePickerInstance.setDisabled(
-            true,
-            'Pilih kecamatan dahulu'
-        );
-    },
+        updateManualForm();
+    }
 });
 
-districtPickerInstance = createRegionPicker({
+districtPicker = createRegionPicker({
     searchId: 'districtSearch',
     menuId: 'districtMenu',
     valueId: 'district_name',
@@ -1216,28 +1096,21 @@ districtPickerInstance = createRegionPicker({
     onSelect: () => {
         villagesParent = '';
 
-        villagePickerInstance.setItems([]);
-        villagePickerInstance.reset();
-
+        villagePicker.setItems([]);
+        villagePicker.reset();
         resetRtRw();
-
-        villagePickerInstance.setDisabled(
-            false,
-            'Cari atau pilih kelurahan / desa'
-        );
-    },
+        updateManualForm();
+    }
 });
 
-villagePickerInstance = createRegionPicker({
+villagePicker = createRegionPicker({
     searchId: 'villageSearch',
     menuId: 'villageMenu',
     valueId: 'village_name',
     codeId: 'village_code',
     emptyText: 'Kelurahan / desa tidak ditemukan.',
     onOpen: loadVillages,
-    onSelect: () => {
-        enableRtRw();
-    },
+    onSelect: updateManualForm
 });
 
 const resetRegionForm = () => {
@@ -1245,56 +1118,109 @@ const resetRegionForm = () => {
     districtsParent = '';
     villagesParent = '';
 
-    provincePickerInstance.reset();
-    regencyPickerInstance.reset();
-    districtPickerInstance.reset();
-    villagePickerInstance.reset();
+    provincePicker.reset();
+    regencyPicker.reset();
+    districtPicker.reset();
+    villagePicker.reset();
 
-    regencyPickerInstance.setItems([]);
-    districtPickerInstance.setItems([]);
-    villagePickerInstance.setItems([]);
+    regencyPicker.setItems([]);
+    districtPicker.setItems([]);
+    villagePicker.setItems([]);
 
-    provincePickerInstance.setDisabled(
-        false,
-        'Cari atau pilih provinsi'
-    );
-
-    regencyPickerInstance.setDisabled(
-        true,
-        'Pilih provinsi dahulu'
-    );
-
-    districtPickerInstance.setDisabled(
-        true,
-        'Pilih kabupaten / kota dahulu'
-    );
-
-    villagePickerInstance.setDisabled(
-        true,
-        'Pilih kecamatan dahulu'
-    );
+    provincePicker.setDisabled(true, 'Isi Gmail terlebih dahulu');
+    regencyPicker.setDisabled(true, 'Pilih provinsi dahulu');
+    districtPicker.setDisabled(true, 'Pilih kabupaten / kota dahulu');
+    villagePicker.setDisabled(true, 'Pilih kecamatan dahulu');
 
     resetRtRw();
 };
 
+const updateManualForm = () => {
+    const nameValid = el('name').value.trim().length > 0;
+
+    toggleInput(el('manual_email'), nameValid);
+    setGroupState(el('manual_email'), nameValid);
+
+    const email = el('manual_email').value.trim().toLowerCase();
+
+    const emailValid =
+        nameValid &&
+        el('manual_email').checkValidity() &&
+        /^[^\s@]+@gmail\.com$/.test(email);
+
+    toggleInput(el('email_consent'), emailValid);
+
+    provincePicker.setDisabled(
+        !emailValid,
+        emailValid ? 'Cari atau pilih provinsi' : 'Isi Gmail terlebih dahulu'
+    );
+
+    const provinceValid = emailValid && el('province_name').value !== '';
+
+    regencyPicker.setDisabled(
+        !provinceValid,
+        provinceValid ? 'Cari atau pilih kabupaten / kota' : 'Pilih provinsi dahulu'
+    );
+
+    const regencyValid = provinceValid && el('regency_name').value !== '';
+
+    districtPicker.setDisabled(
+        !regencyValid,
+        regencyValid ? 'Cari atau pilih kecamatan' : 'Pilih kabupaten / kota dahulu'
+    );
+
+    const districtValid = regencyValid && el('district_name').value !== '';
+
+    villagePicker.setDisabled(
+        !districtValid,
+        districtValid ? 'Cari atau pilih kelurahan / desa' : 'Pilih kecamatan dahulu'
+    );
+
+    const villageValid = districtValid && el('village_name').value !== '';
+
+    toggleInput(el('rw'), villageValid);
+    setGroupState(el('rw'), villageValid);
+
+    const rw = el('rw').value.trim();
+    const rwValid = !rw || /^\d{1,3}$/.test(rw);
+    const rtEnabled = villageValid && /^\d{3}$/.test(rw);
+
+    toggleInput(el('rt'), rtEnabled);
+    setGroupState(el('rt'), rtEnabled);
+
+    const rt = el('rt').value.trim();
+    const rtValid = !rt || /^\d{1,3}$/.test(rt);
+
+    const complete =
+        el('registration_token').value !== '' &&
+        /^\d{18}$/.test(el('manual_nip').value) &&
+        nameValid &&
+        emailValid &&
+        villageValid &&
+        rwValid &&
+        rtValid;
+
+    if (!saving) {
+        saveButton.disabled = !complete;
+    }
+};
+
 const validateRegionForm = () => {
-    const requiredPickers = [
-        [provincePickerInstance, 'Silakan pilih provinsi dari daftar.'],
-        [regencyPickerInstance, 'Silakan pilih kabupaten / kota dari daftar.'],
-        [districtPickerInstance, 'Silakan pilih kecamatan dari daftar.'],
-        [villagePickerInstance, 'Silakan pilih kelurahan / desa dari daftar.'],
+    const required = [
+        [provincePicker, 'Silakan pilih provinsi dari daftar.'],
+        [regencyPicker, 'Silakan pilih kabupaten / kota dari daftar.'],
+        [districtPicker, 'Silakan pilih kecamatan dari daftar.'],
+        [villagePicker, 'Silakan pilih kelurahan / desa dari daftar.']
     ];
 
-    for (const [picker, message] of requiredPickers) {
-        if (!picker.getValue() && !picker.commitExact()) {
-            const search = picker.getSearch();
+    for (const [picker, message] of required) {
+        if (picker.getValue() || picker.commitExact()) continue;
 
-            search.setCustomValidity(message);
-            search.reportValidity();
-            search.focus();
+        picker.getSearch().setCustomValidity(message);
+        picker.getSearch().reportValidity();
+        picker.getSearch().focus();
 
-            return false;
-        }
+        return false;
     }
 
     return true;
@@ -1302,7 +1228,7 @@ const validateRegionForm = () => {
 
 document.addEventListener('pointerdown', event => {
     if (!institutionPicker.contains(event.target)) {
-        institutionMenu.classList.remove('open', 'drop-up', 'drop-down');
+        closeInstitutionMenu();
     }
 });
 
@@ -1319,15 +1245,12 @@ if (window.visualViewport) {
 
 document.querySelectorAll('[data-close-modal]').forEach(button => {
     button.addEventListener('click', () => {
-        const id = button.dataset.closeModal;
-        const focusId = button.dataset.focus || '';
+        closeModal(button.dataset.closeModal);
 
-        closeModal(id);
+        const focus = button.dataset.focus;
 
-        if (focusId) {
-            setTimeout(() => {
-                document.getElementById(focusId)?.focus();
-            }, 100);
+        if (focus) {
+            setTimeout(() => el(focus)?.focus(), 100);
         }
     });
 });
@@ -1343,7 +1266,7 @@ document.querySelectorAll('.modal').forEach(modal => {
 document.addEventListener('keydown', event => {
     if (event.key !== 'Escape') return;
 
-    institutionMenu.classList.remove('open', 'drop-up', 'drop-down');
+    closeInstitutionMenu();
 
     document.querySelectorAll('.region-menu.open').forEach(menu => {
         menu.classList.remove('open', 'drop-up', 'drop-down');
@@ -1354,107 +1277,111 @@ document.addEventListener('keydown', event => {
     });
 });
 
-document.getElementById('nik').addEventListener('input', event => {
+el('nik').addEventListener('input', event => {
     event.target.value = event.target.value.replace(/\D/g, '').slice(0, 16);
+    event.target.setCustomValidity('');
+    updateMainForm();
 });
 
-['rw', 'rt'].forEach(id => {
-    const input = document.getElementById(id);
+el('nip').addEventListener('input', event => {
+    event.target.value = event.target.value.replace(/\D/g, '').slice(0, 18);
+    event.target.setCustomValidity('');
+    updateMainForm();
+});
 
-    input.addEventListener('input', event => {
-        event.target.value = event.target.value
-            .replace(/\D/g, '')
-            .slice(0, 3);
+el('name').addEventListener('input', updateManualForm);
 
+el('manual_email').addEventListener('input', event => {
+    event.target.setCustomValidity('');
+    updateManualForm();
+});
+
+el('manual_email').addEventListener('blur', event => {
+    event.target.value = event.target.value.trim().toLowerCase();
+    updateManualForm();
+});
+
+for (const id of ['rw', 'rt']) {
+    el(id).addEventListener('input', event => {
+        event.target.value = event.target.value.replace(/\D/g, '').slice(0, 3);
         event.target.setCustomValidity('');
+        updateManualForm();
     });
 
-    input.addEventListener('blur', event => {
-        const value = event.target.value
-            .replace(/\D/g, '')
-            .slice(0, 3);
-
-        if (!value) {
-            event.target.value = '';
-            return;
-        }
-
-        event.target.value = value.padStart(3, '0');
+    el(id).addEventListener('blur', event => {
+        const value = event.target.value.replace(/\D/g, '').slice(0, 3);
+        event.target.value = value ? value.padStart(3, '0') : '';
+        updateManualForm();
     });
-});
+}
 
-document.getElementById('openManualFormButton').addEventListener('click', () => {
+el('openManualFormButton').addEventListener('click', () => {
     closeModal('notFoundModal');
 
     manualError.style.display = 'none';
     manualError.textContent = '';
 
-    document.getElementById('name').value = '';
+    el('name').value = '';
+    el('manual_email').value = '';
+    el('email_consent').checked = false;
 
     resetRegionForm();
+    updateManualForm();
     openModal('manualModal');
 
     setTimeout(() => {
-        document.getElementById('name').focus();
+        el('name').focus();
     }, 120);
 });
 
 checkForm.addEventListener('submit', async event => {
     event.preventDefault();
 
-    const nikInput = document.getElementById('nik');
-    const nik = nikInput.value.replace(/\D/g, '');
+    const nik = el('nik').value.replace(/\D/g, '');
+    const nip = el('nip').value.replace(/\D/g, '');
 
-    if (nik.length !== 16) {
-        nikInput.setCustomValidity('NIK harus terdiri dari 16 digit.');
-        nikInput.reportValidity();
-        nikInput.focus();
+    if (nik.length !== 16 || nip.length !== 18) {
+        updateMainForm();
         return;
     }
 
-    nikInput.setCustomValidity('');
-
     if (institutionOtherMode) {
-        const value = institutionOtherInput.value
+        const name = institutionOtherInput.value
             .replace(/\s+/g, ' ')
             .trim();
 
-        if (!value) {
+        if (!name) {
             institutionOtherInput.setCustomValidity('Nama instansi wajib diisi.');
             institutionOtherInput.reportValidity();
-            institutionOtherInput.focus();
             return;
         }
 
-        institutionOtherInput.setCustomValidity('');
-        institutionInput.value = value;
+        institutionInput.value = name;
     } else {
-        const query = normalizeText(institutionSearch.value);
+        const selected = institutions.find(item =>
+            normalizeText(item.name) === normalizeText(institutionSearch.value) ||
+            (
+                item.alias &&
+                normalizeText(item.alias) === normalizeText(institutionSearch.value)
+            )
+        );
 
-        const exact = institutions.find(item => {
-            return normalizeText(item.name) === query ||
-                normalizeText(item.alias) === query;
-        });
-
-        if (!institutionInput.value && exact) {
-            selectInstitution(exact);
+        if (selected) {
+            selectInstitution(selected);
         }
 
         if (!institutionInput.value) {
             institutionSearch.setCustomValidity(
                 'Silakan pilih instansi dari daftar atau gunakan Instansi Lainnya.'
             );
-
             institutionSearch.reportValidity();
-            institutionSearch.focus();
             return;
         }
-
-        institutionSearch.setCustomValidity('');
     }
 
-    institutionMenu.classList.remove('open', 'drop-up', 'drop-down');
+    closeInstitutionMenu();
 
+    checking = true;
     setButtonLoading(checkButton, true, 'Cek NIK', 'Memeriksa');
 
     try {
@@ -1463,51 +1390,40 @@ checkForm.addEventListener('submit', async event => {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
-                'X-CSRF-TOKEN': csrf,
+                'X-CSRF-TOKEN': csrf
             },
             body: JSON.stringify({
                 nik,
-                institution: institutionInput.value,
-            }),
+                nip,
+                institution: institutionInput.value
+            })
         });
 
         const result = await readJson(response);
 
         if (!response.ok) {
-            const message = result.errors
-                ? Object.values(result.errors).flat().join(' ')
-                : result.message || 'Terjadi kesalahan saat melakukan pengecekan.';
-
             showResultModal({
                 type: 'error',
                 title: 'Pengecekan Gagal',
-                message,
-                buttonText: 'Tutup',
+                message: result.errors
+                    ? Object.values(result.errors).flat().join(' ')
+                    : result.message || 'Pengecekan gagal.'
             });
 
             return;
         }
 
         if (result.result === 'found') {
-            const sudah = result.data.status === 'Sudah Didata';
-
-            const status = `
-                <span class="status-badge ${sudah ? 'success' : 'warning'}">
-                    ${escapeHtml(result.data.status)}
-                </span>
-            `;
-
-            const details =
-                detailRow('NIK', escapeHtml(result.data.masked_nik)) +
-                detailRow('Nama', escapeHtml(result.data.name || '-')) +
-                detailRow('Status', status);
+            const already = result.data.status === 'Sudah Didata';
 
             showResultModal({
-                type: sudah ? 'success' : 'warning',
-                title: sudah ? 'Data Sudah Didata' : 'Data Belum Didata',
+                type: already ? 'success' : 'warning',
+                title: already ? 'Data Sudah Didata' : 'Data Belum Didata',
                 message: result.message,
-                details,
-                buttonText: 'Selesai',
+                details:
+                    detailRow('NIK', result.data.masked_nik) +
+                    detailRow('Nama', result.data.name || '-') +
+                    detailRow('Status', result.data.status || '-')
             });
 
             return;
@@ -1519,23 +1435,18 @@ checkForm.addEventListener('submit', async event => {
                 title: 'Data Sudah Dikirim',
                 message: result.message,
                 details:
-                    detailRow('NIK', escapeHtml(result.data.masked_nik)) +
-                    detailRow('Instansi', escapeHtml(result.data.institution)),
-                buttonText: 'Selesai',
+                    detailRow('NIK', result.data.masked_nik) +
+                    detailRow('Instansi', result.data.institution)
             });
 
             return;
         }
 
         if (result.result === 'not_found') {
-            document.getElementById('registration_token').value =
-                result.data.registration_token;
-
-            document.getElementById('manual_nik').value =
-                result.data.masked_nik;
-
-            document.getElementById('manual_institution').value =
-                result.data.institution;
+            el('registration_token').value = result.data.registration_token;
+            el('manual_nik').value = result.data.masked_nik;
+            el('manual_institution').value = result.data.institution;
+            el('manual_nip').value = nip;
 
             openModal('notFoundModal');
             return;
@@ -1544,18 +1455,18 @@ checkForm.addEventListener('submit', async event => {
         showResultModal({
             type: 'error',
             title: 'Pengecekan Gagal',
-            message: 'Respons server tidak dikenali.',
-            buttonText: 'Tutup',
+            message: 'Respons server tidak dikenali.'
         });
     } catch {
         showResultModal({
             type: 'error',
             title: 'Koneksi Bermasalah',
-            message: 'Tidak dapat menghubungi server. Silakan coba kembali.',
-            buttonText: 'Tutup',
+            message: 'Tidak dapat menghubungi server. Silakan coba kembali.'
         });
     } finally {
+        checking = false;
         setButtonLoading(checkButton, false, 'Cek NIK', 'Memeriksa');
+        updateMainForm();
     }
 });
 
@@ -1565,8 +1476,25 @@ manualForm.addEventListener('submit', async event => {
     manualError.style.display = 'none';
     manualError.textContent = '';
 
+    el('manual_email').value = el('manual_email').value.trim().toLowerCase();
+    el('manual_email').setCustomValidity('');
+
+    if (
+        !el('manual_email').checkValidity() ||
+        !/^[^\s@]+@gmail\.com$/.test(el('manual_email').value)
+    ) {
+        el('manual_email').setCustomValidity(
+            'Gunakan alamat Gmail dengan domain @gmail.com.'
+        );
+
+        el('manual_email').reportValidity();
+        el('manual_email').focus();
+        return;
+    }
+
     if (!validateRegionForm()) return;
 
+    saving = true;
     setButtonLoading(saveButton, true, 'Simpan Data', 'Menyimpan');
 
     try {
@@ -1579,19 +1507,18 @@ manualForm.addEventListener('submit', async event => {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
-                'X-CSRF-TOKEN': csrf,
+                'X-CSRF-TOKEN': csrf
             },
-            body: JSON.stringify(payload),
+            body: JSON.stringify(payload)
         });
 
         const result = await readJson(response);
 
         if (!response.ok) {
-            const message = result.errors
+            manualError.textContent = result.errors
                 ? Object.values(result.errors).flat().join(' ')
                 : result.message || 'Data gagal disimpan.';
 
-            manualError.textContent = message;
             manualError.style.display = 'block';
             return;
         }
@@ -1607,13 +1534,11 @@ manualForm.addEventListener('submit', async event => {
         showResultModal({
             type: 'success',
             title: 'Data Berhasil Disimpan',
-            message: 'Data Anda telah berhasil disimpan.',
+            message: result.message || 'Data Anda telah berhasil disimpan.',
             details:
-                detailRow('Nama', escapeHtml(result.data?.name || '-')) +
-                // detailRow('NIK', escapeHtml(result.data?.masked_nik || '-')) +
-                detailRow('Instansi', escapeHtml(result.data?.institution || '-')),
-            buttonText: 'Selesai',
-            focusAfterClose: 'nik',
+                detailRow('Nama', result.data?.name || '-') +
+                detailRow('Instansi', result.data?.institution || '-'),
+            focusAfterClose: 'nik'
         });
     } catch {
         manualError.textContent =
@@ -1621,11 +1546,26 @@ manualForm.addEventListener('submit', async event => {
 
         manualError.style.display = 'block';
     } finally {
+        saving = false;
+
         setButtonLoading(saveButton, false, 'Simpan Data', 'Menyimpan');
+
+        updateMainForm();
+        updateManualForm();
     }
 });
 
+checkForm.addEventListener('reset', () => {
+    setTimeout(updateMainForm, 0);
+});
+
+manualForm.addEventListener('reset', () => {
+    setTimeout(updateManualForm, 0);
+});
+
 resetRegionForm();
+updateMainForm();
+updateManualForm();
 </script>
 </body>
 </html>

@@ -11,59 +11,48 @@ use Illuminate\Support\Facades\Crypt;
 
 class CheckUnitController extends Controller
 {
-    public function __construct(
-        private readonly NikSecurityService $nikSecurity
-    ) {}
+    public function __construct(private readonly NikSecurityService $nikSecurity)
+    {
+    }
 
     public function check(CheckUnitRequest $request): JsonResponse
     {
         $nik = $request->validated('nik');
-
-        $institution = preg_replace(
-            '/\s+/',
-            ' ',
-            trim($request->validated('institution'))
-        );
-
+        $nip = $request->validated('nip');
+        $institution = preg_replace('/\s+/', ' ', trim($request->validated('institution')));
         $nikLookup = $this->nikSecurity->lookup($nik);
 
-        $employees = MasterEmployee::query()
-            ->where('nik_lookup', $nikLookup)
-            ->get();
+        $employees = MasterEmployee::query()->where('nik_lookup', $nikLookup)->get();
 
         if ($employees->isEmpty()) {
-            $manualRegistration = ManualRegistration::query()
-                ->where('nik_lookup', $nikLookup)
-                ->first();
+            $manualRegistration = ManualRegistration::query()->where('nik_lookup', $nikLookup)->first();
 
             if ($manualRegistration) {
                 $manualRegistration->update([
                     'institution' => $institution,
+                    'nip' => $nip,
                 ]);
 
                 return response()->json([
                     'result' => 'manual_found',
                     'message' => 'Data Anda sebelumnya sudah pernah dikirim.',
                     'data' => [
-                        'masked_nik' => $this->nikSecurity->maskEncrypted(
-                            $manualRegistration->nik_encrypted
-                        ),
+                        'masked_nik' => $this->nikSecurity->maskEncrypted($manualRegistration->nik_encrypted),
                         'institution' => $institution,
                     ],
                 ]);
             }
 
-            $registrationToken = Crypt::encryptString(
-                json_encode([
-                    'nik' => $nik,
-                    'institution' => $institution,
-                    'expires_at' => now()->addMinutes(15)->timestamp,
-                ], JSON_THROW_ON_ERROR)
-            );
+            $registrationToken = Crypt::encryptString(json_encode([
+                'nik' => $nik,
+                'nip' => $nip,
+                'institution' => $institution,
+                'expires_at' => now()->addMinutes(15)->timestamp,
+            ], JSON_THROW_ON_ERROR));
 
             return response()->json([
                 'result' => 'not_found',
-                'message' => 'NIK tidak ditemukan pada data master.',
+                'message' => 'NIK tidak ditemukan pada data master. Silakan lengkapi data Anda.',
                 'data' => [
                     'masked_nik' => $this->nikSecurity->mask($nik),
                     'institution' => $institution,
@@ -72,28 +61,24 @@ class CheckUnitController extends Controller
             ]);
         }
 
-        MasterEmployee::query()
-            ->where('nik_lookup', $nikLookup)
-            ->update([
-                'instansi' => $institution,
-            ]);
+        MasterEmployee::query()->where('nik_lookup', $nikLookup)->update([
+            'instansi' => $institution,
+            'nip' => $nip,
+        ]);
 
-        $name = $employees
-    ->map(function (MasterEmployee $employee) {
-        return trim((string) (
-            $employee->name
-            ?: $employee->nama
-            ?: $employee->respSE26_nama
-            ?: $employee->nama_kepala_keluarga
-            ?: ''
-        ));
-    })
-    ->filter()
-    ->first();
+        $name = $employees->map(function (MasterEmployee $employee) {
+            return trim((string) (
+                $employee->name
+                ?: $employee->nama
+                ?: $employee->respSE26_nama
+                ?: $employee->nama_kepala_keluarga
+                ?: ''
+            ));
+        })->filter()->first();
 
         return response()->json([
             'result' => 'found',
-            'message' => 'Data Anda sudah terdata.',
+            'message' => 'Data Anda sudah terdata. Apabila Anda berdomisili di Kota Probolinggo, maka akan ditindaklanjuti oleh petugas.',
             'data' => [
                 'masked_nik' => $this->nikSecurity->mask($nik),
                 'name' => $name,

@@ -8,6 +8,8 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
+                 'resources/css/monitoring.css',
+                'resources/js/monitoring/app.js',
             ],
             refresh: true,
         }),
